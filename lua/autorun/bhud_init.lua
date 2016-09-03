@@ -1,4 +1,5 @@
 bhud = {}
+local files = file.Find( "bhud/client/designs/*.lua", "LUA" )
 
 if SERVER then
 
@@ -8,7 +9,6 @@ if SERVER then
 	-- Send files to client
 	AddCSLuaFile()
 
-	local files = file.Find( "bhud/client/designs/*.lua", "LUA" )
 	table.foreach( files, function( key, plugin )
 		AddCSLuaFile( "bhud/client/designs/" .. plugin )
 	end )
@@ -43,19 +43,17 @@ else
 		cdraw = tobool( GetConVarNumber( "cl_drawhud" ) ),
 		defs = {},
 		ply = {},
-		res = {}
+		res = {},
+		designs = #files
 	}
 
 	include( "bhud/client/sql.lua" )
 	include( "bhud/client/fonts.lua" )
+	include( "bhud/client/bhud.lua" )
+	include( "bhud/client/derma.lua" )
 
-	local fs = file.Find( "bhud/client/designs/*.lua", "LUA" )
-	bhud.designs = #fs
 	table.foreach( fs, function( key, file )
 		include( "bhud/client/designs/" .. file )
 	end )
-
-	include( "bhud/client/bhud.lua" )
-	include( "bhud/client/derma.lua" )
 
 end
